@@ -3,7 +3,21 @@ version: '${project.version}'
 main: com.funniray.anvil.FormattedAnvils
 api-version: '1.16'
 
+commands:
+  anvilformatreload:
+    description: "Reloads formatted-anvils"
+    permission: anvilformat.reload
+    usage: "/anvilformatreload"
+    aliases:
+      - formattedanvilsreload
+
 permissions:
+  anvilformat.reload:
+    default: "op"
+    description: "Allows reloading plugin"
+  anvilformat.filter.bypass:
+    default: "op"
+    description: "Allows bypassing the filter"
   anvilformat.format:
     default: "op"
     description: "Allows formatting"

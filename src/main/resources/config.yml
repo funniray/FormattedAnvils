@@ -1,0 +1,8 @@
+# Java RegExp filter for banned words
+filter:
+  enabled: false
+  patterns:
+    - "foo"
+    - "bar"
+    # a regex pattern for four letter string that starts with 'J' and end with 'a'
+    - "^J..a$"

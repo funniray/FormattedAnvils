@@ -10,6 +10,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class AnvilListener implements Listener {
+    FormattedAnvils plugin;
+
+    public AnvilListener(FormattedAnvils plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onPrepareAnvil(PrepareAnvilEvent e) {
@@ -34,6 +39,14 @@ public class AnvilListener implements Listener {
         }
 
         Component formatted = Formatter.formatName(e.getInventory().getRenameText(), player);
+
+        if (!player.hasPermission("anvilformat.filter.bypass")) {
+            if (plugin.getFilter().test(formatted)) {
+                e.setResult(ItemStack.empty());
+                return;
+            };
+        }
+
         ItemMeta meta = item.getItemMeta();
         meta.displayName(formatted);
         item.setItemMeta(meta);
