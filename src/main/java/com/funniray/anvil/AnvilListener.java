@@ -1,6 +1,7 @@
 package com.funniray.anvil;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,8 +19,18 @@ public class AnvilListener implements Listener {
         }
 
         ItemStack item = e.getResult();
-        if (item == null) {
+        ItemStack inputItem = e.getInventory().getFirstItem();
+        if (item == null || inputItem == null || e.getInventory().getRenameText() == null) {
             return;
+        }
+
+        // Don't rename the item if they're just trying to repair their tool
+        ItemMeta inputMeta = inputItem.getItemMeta();
+        if (inputMeta != null && inputMeta.displayName() != null) {
+            String plain = PlainTextComponentSerializer.plainText().serialize(inputMeta.displayName());
+            if (e.getInventory().getRenameText().equals(plain) && e.getInventory().getSecondItem() != null && !e.getInventory().getSecondItem().isEmpty()) {
+                return;
+            }
         }
 
         Component formatted = Formatter.formatName(e.getInventory().getRenameText(), player);
